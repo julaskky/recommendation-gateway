@@ -1,0 +1,129 @@
+
+{
+  "application_id": "restaurant_app",
+  "version": "1.0.0",
+
+  "defaults": {
+    "context.domain": "food",
+    "metadata.source": "restaurant_application"
+  },
+
+  "fields": {
+    "user.user_id": {
+      "source": "customer_id",
+      "required": true
+    },
+
+    "user.attributes.preferred_cuisine": {
+      "source": "preferred_food",
+      "transform": "string"
+    },
+
+    "user.attributes.preferred_category": {
+      "source": "preferred_category"
+    },
+
+    "context.application_id": {
+      "value": "restaurant_app"
+    },
+
+    "context.session_id": {
+      "source": "session_id"
+    },
+
+    "context.device_type": {
+      "source": "device"
+    },
+
+    "context.locale": {
+      "source": "language"
+    },
+
+    "context.location.city": {
+      "source": "location.city"
+    },
+
+    "context.location.country": {
+      "source": "location.country"
+    },
+
+    "limit": {
+      "source": "max_results",
+      "default": 10,
+      "transform": "integer"
+    },
+
+    "metadata.source": {
+      "source": "source",
+      "default": "restaurant_application"
+    }
+  },
+
+  "collections": {
+    "interaction_history": {
+      "source": "events",
+
+      "fields": {
+        "event_type": {
+          "source": "action",
+          "required": true,
+          "value_map": {
+            "view": "view",
+            "impression": "impression",
+            "click": "click",
+            "like": "like",
+            "favorite": "favorite",
+            "cart": "cart",
+            "order": "purchase",
+            "purchase": "purchase",
+            "rating": "rating",
+            "share": "share",
+            "dismiss": "dismiss"
+          }
+        },
+
+        "item_id": {
+          "source": "restaurant_code"
+        },
+
+        "timestamp": {
+          "source": "occurred_at"
+        },
+
+        "value": {
+          "source": "amount",
+          "transform": "float"
+        }
+      }
+    },
+
+    "candidate_items": {
+      "source": "restaurants",
+
+      "defaults": {
+        "item_type": "restaurant"
+      },
+
+      "fields": {
+        "item_id": {
+          "source": "restaurant_code",
+          "required": true
+        },
+
+        "attributes.cuisine": {
+          "source": "food_type"
+        },
+
+        "attributes.rating": {
+          "source": "customer_rating",
+          "transform": "float"
+        },
+
+        "attributes.price_level": {
+          "source": "price_category",
+          "transform": "integer"
+        }
+      }
+    }
+  }
+}
